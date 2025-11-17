@@ -4,5 +4,5 @@ export interface ConversionConfig {
 }
 
 export interface ConversionConfigRepository {
-    getConversionConfig(toUnit: string): ConversionConfig | undefined;
+    getConversionConfig(unit: string): ConversionConfig | undefined;
 }
