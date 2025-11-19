@@ -24,8 +24,35 @@ describe('UnitConversionService', () => {
         })
 
         const inputValue = 15;
-        const expectedResult = (inputValue * 1609.34) * (1 / 1000); 
+        const fromUnitOffset = 0;
+        const fromUnitMultiplier = 1609.34;
+        const toUnitMultiplier = 1000;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+
         const convertedLength = unitConversionServiceImpl.convert(inputValue, 'mile', 'kilometer')
+
+        expect(convertedLength).toBeCloseTo(expectedResult);
+        expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
+    })
+
+    it('should convert 20 kilometers to miles', () => {
+        (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
+            if (unit === 'kilometer') return { multiplier: 1000, offset: 0 };
+            if (unit === 'mile') return { multiplier: 1609.34, offset: 0 };
+            return undefined;
+        })
+
+        const inputValue = 20;
+        const fromUnitOffset = 0;
+        const fromUnitMultiplier = 1000;
+        const toUnitMultiplier = 1609.34;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        
+        const convertedLength = unitConversionServiceImpl.convert(inputValue, 'kilometer', 'mile')
 
         expect(convertedLength).toBeCloseTo(expectedResult);
         expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -39,8 +66,34 @@ describe('UnitConversionService', () => {
         })
 
         const inputValue = 70;
-        const expectedResult = (inputValue * 0.55555555) + -17.7777777;
+        const fromUnitOffset = -17.7777777;
+        const fromUnitMultiplier = 0.55555555;
+        const toUnitMultiplier = 1;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+
         const convertedTemperature = unitConversionServiceImpl.convert(inputValue, 'fahrenheit', 'celsius');
+
+        expect(convertedTemperature).toBeCloseTo(expectedResult);
+        expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
+    })
+
+    it('should convert 28 celsius to fahrenheit', () => {
+        (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
+            if (unit === 'celsius') return { multiplier: 1, offset: 0 };
+            if (unit === 'fahrenheit') return { multiplier: 0.55555555, offset: -17.7777777 };
+            return undefined;
+        })
+
+        const inputValue = 28;
+        const fromUnitOffset = 0;
+        const fromUnitMultiplier = 1;
+        const toUnitMultiplier = 0.55555555;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const convertedTemperature = unitConversionServiceImpl.convert(inputValue, 'celsius', 'fahrenheit');
 
         expect(convertedTemperature).toBeCloseTo(expectedResult);
         expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -54,8 +107,35 @@ describe('UnitConversionService', () => {
         })
 
         const inputValue = 50;
-        const expectedResult = inputValue * 0.453592;
+        const fromUnitOffset = 0;
+        const fromUnitMultiplier = 0.453592;
+        const toUnitMultiplier = 1;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        
         const convertedMass = unitConversionServiceImpl.convert(inputValue, 'pound', 'kilogram');
+
+        expect(convertedMass).toBeCloseTo(expectedResult);
+        expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
+    })
+
+    it('should convert 25 kilogram to pounds', () => {
+        (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
+            if (unit === 'kilogram') return { multiplier: 1, offset: 0 };
+            if (unit === 'pound') return { multiplier: 0.453592, offset: 0 };
+            return undefined;
+        })
+
+        const inputValue = 25;
+        const fromUnitOffset = 0;
+        const fromUnitMultiplier = 1;
+        const toUnitMultiplier = 0.453592;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+
+        const convertedMass = unitConversionServiceImpl.convert(inputValue, 'kilogram', 'pound');
 
         expect(convertedMass).toBeCloseTo(expectedResult);
         expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -69,8 +149,35 @@ describe('UnitConversionService', () => {
         })
 
         const inputValue = 25;
-        const expectedResult = inputValue * 3.78541;
+        const fromUnitOffset = 0;
+        const fromUnitMultiplier = 3.78541;
+        const toUnitMultiplier = 1;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+
         const convertedVolume = unitConversionServiceImpl.convert(inputValue, 'gallon', 'liter');
+
+        expect(convertedVolume).toBeCloseTo(expectedResult);
+        expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
+    })
+
+    it('should convert 45 liter to gallons', () => {
+        (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
+            if (unit === 'liter') return { multiplier: 1, offset: 0 };
+            if (unit === 'gallon') return { multiplier: 3.78541, offset: 0 };
+            return undefined;
+        })
+
+        const inputValue = 45;
+        const fromUnitOffset = 0;
+        const fromUnitMultiplier = 1;
+        const toUnitMultiplier = 3.78541;
+
+        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
+        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+
+        const convertedVolume = unitConversionServiceImpl.convert(inputValue, 'liter', 'gallon');
 
         expect(convertedVolume).toBeCloseTo(expectedResult);
         expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
