@@ -1,0 +1,71 @@
+  name: CI/CD Pipeline
+
+  on:
+    push:
+      # Run pipeline on every push to the specified branch
+      branches:
+        - '*'
+
+  jobs:
+    # 1. TEST JOB
+    test:
+      runs-on: ubuntu-latest
+      
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v4
+        
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20.x' 
+            cache: 'npm'
+        
+        - name: Install Root Dependencies
+          run: npm ci 
+          
+        - name: Install Server Dependencies (CRITICAL for Vitest)
+          run: cd server && npm ci 
+        
+        - name: Run Unit Tests
+          run: npm run test 
+
+
+    # 2. BUILD JOB
+    build:
+      runs-on: ubuntu-latest
+      needs: [test] 
+
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v4
+        
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20.x' 
+            cache: 'npm'
+            
+        - name: Install Server Dependencies
+          run: cd server && npm ci
+          
+        - name: Install Client Dependencies
+          run: cd client && npm ci
+        
+        - name: Build Backend
+          run: npm run server:build
+          
+        - name: Build Frontend
+          run: npm run client:build
+
+        - name: Upload Server Artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: server-artifact
+            path: server/dist/
+            
+        - name: Upload Client Artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: client-artifact
+            path: client/dist/
