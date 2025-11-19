@@ -21,11 +21,8 @@
             node-version: '20.x' 
             cache: 'npm'
         
-        - name: Install Root Dependencies
+        - name: Install Dependencies
           run: npm ci 
-          
-        - name: Install Server Dependencies (CRITICAL for Vitest)
-          run: cd server && npm ci 
         
         - name: Run Unit Tests
           run: npm run test 
@@ -46,26 +43,15 @@
             node-version: '20.x' 
             cache: 'npm'
             
-        - name: Install Server Dependencies
-          run: cd server && npm ci
-          
-        - name: Install Client Dependencies
-          run: cd client && npm ci
+        - name: Install Dependencies
+          run: npm ci
         
         - name: Build Backend
-          run: npm run server:build
-          
-        - name: Build Frontend
-          run: npm run client:build
+          run: npm run build
 
-        - name: Upload Server Artifact
+        - name: Upload Artifact
           uses: actions/upload-artifact@v4
           with:
-            name: server-artifact
-            path: server/dist/
+            name: build-artifact
+            path: dist/
             
-        - name: Upload Client Artifact
-          uses: actions/upload-artifact@v4
-          with:
-            name: client-artifact
-            path: client/dist/
