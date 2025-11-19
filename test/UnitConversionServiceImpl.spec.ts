@@ -25,11 +25,12 @@ describe('UnitConversionService', () => {
 
         const inputValue = 15;
         const fromUnitOffset = 0;
+        const toUnitOffset = 0;
         const fromUnitMultiplier = 1609.34;
         const toUnitMultiplier = 1000;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
         const convertedLength = unitConversionServiceImpl.convert(inputValue, 'mile', 'kilometer')
 
@@ -46,11 +47,12 @@ describe('UnitConversionService', () => {
 
         const inputValue = 20;
         const fromUnitOffset = 0;
+        const toUnitOffset = 0;
         const fromUnitMultiplier = 1000;
         const toUnitMultiplier = 1609.34;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
         
         const convertedLength = unitConversionServiceImpl.convert(inputValue, 'kilometer', 'mile')
 
@@ -67,11 +69,12 @@ describe('UnitConversionService', () => {
 
         const inputValue = 70;
         const fromUnitOffset = -17.7777777;
+        const toUnitOffset = 0;
         const fromUnitMultiplier = 0.55555555;
         const toUnitMultiplier = 1;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
         const convertedTemperature = unitConversionServiceImpl.convert(inputValue, 'fahrenheit', 'celsius');
 
@@ -88,11 +91,13 @@ describe('UnitConversionService', () => {
 
         const inputValue = 28;
         const fromUnitOffset = 0;
+        const toUnitOffset = -17.7777777;
         const fromUnitMultiplier = 1;
         const toUnitMultiplier = 0.55555555;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
+
         const convertedTemperature = unitConversionServiceImpl.convert(inputValue, 'celsius', 'fahrenheit');
 
         expect(convertedTemperature).toBeCloseTo(expectedResult);
@@ -108,11 +113,12 @@ describe('UnitConversionService', () => {
 
         const inputValue = 50;
         const fromUnitOffset = 0;
+        const toUnitOffset = 0;
         const fromUnitMultiplier = 0.453592;
         const toUnitMultiplier = 1;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
         
         const convertedMass = unitConversionServiceImpl.convert(inputValue, 'pound', 'kilogram');
 
@@ -129,11 +135,12 @@ describe('UnitConversionService', () => {
 
         const inputValue = 25;
         const fromUnitOffset = 0;
+        const toUnitOffset = 0;
         const fromUnitMultiplier = 1;
         const toUnitMultiplier = 0.453592;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
         const convertedMass = unitConversionServiceImpl.convert(inputValue, 'kilogram', 'pound');
 
@@ -150,11 +157,12 @@ describe('UnitConversionService', () => {
 
         const inputValue = 25;
         const fromUnitOffset = 0;
+        const toUnitOffset = 0;
         const fromUnitMultiplier = 3.78541;
         const toUnitMultiplier = 1;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
         const convertedVolume = unitConversionServiceImpl.convert(inputValue, 'gallon', 'liter');
 
@@ -171,11 +179,12 @@ describe('UnitConversionService', () => {
 
         const inputValue = 45;
         const fromUnitOffset = 0;
+        const toUnitOffset = 0;
         const fromUnitMultiplier = 1;
         const toUnitMultiplier = 3.78541;
 
-        const fromValueInBaseUnit = inputValue * fromUnitMultiplier;
-        const expectedResult = (fromValueInBaseUnit / toUnitMultiplier) + fromUnitOffset;
+        const inputValueInBaseUnit = (inputValue * fromUnitMultiplier) + fromUnitOffset;
+        const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
         const convertedVolume = unitConversionServiceImpl.convert(inputValue, 'liter', 'gallon');
 

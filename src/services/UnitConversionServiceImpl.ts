@@ -3,7 +3,7 @@ import type { ConversionConfigRepository } from "../interfaces/ConversionConfigR
 
 
 export class UnitConversionServiceImpl implements UnitConversionService {
-    conversionConfigs: ConversionConfigRepository;
+    private readonly conversionConfigs: ConversionConfigRepository;
 
     constructor(conversionConfigs: ConversionConfigRepository) {
         this.conversionConfigs = conversionConfigs;
@@ -17,9 +17,9 @@ export class UnitConversionServiceImpl implements UnitConversionService {
             throw new Error('Config multiplier missing.')
         }
 
-        const fromValueInBaseUnit = value * fromUnitConfig.multiplier;
-        const convertedUnit = (fromValueInBaseUnit / toUnitConfig.multiplier) + fromUnitConfig.offset;
+        const inputValueInBaseUnit = (value * fromUnitConfig.multiplier) + fromUnitConfig.offset;
+        const convertedValue = (inputValueInBaseUnit - toUnitConfig.offset) / toUnitConfig.multiplier;
 
-        return convertedUnit;
+        return convertedValue;
     }
 }
