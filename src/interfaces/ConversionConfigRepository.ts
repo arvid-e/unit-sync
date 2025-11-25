@@ -1,8 +1,8 @@
 export interface ConversionConfig {
-    multiplier: number;
-    offset: number;
+  multiplier: number;
+  offset: number;
 }
 
 export interface ConversionConfigRepository {
-    getConversionConfig(unit: string): ConversionConfig | undefined;
+  getConversionConfig(unit: string): ConversionConfig | undefined;
 }

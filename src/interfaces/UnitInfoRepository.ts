@@ -1,5 +1,5 @@
-import type { UnitInfo } from "../types/UnitTypes.js";
+import type { UnitInfo } from '../types/UnitTypes.js';
 
 export interface UnitInfoRepository {
-    getUnitInfo(unit: string): UnitInfo | undefined;
+  getUnitInfo(unit: string): UnitInfo | undefined;
 }
