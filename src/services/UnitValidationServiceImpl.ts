@@ -59,7 +59,17 @@ export class UnitValidationServiceImpl implements UnitValidationService{
     }
 
     unitsHaveSameDimension(fromUnit: string, toUnit: string): boolean {
-        return false;
+        const fromUnitInfo = this.unitInfoRepo.getUnitInfo(fromUnit);
+        const toUnitInfo = this.unitInfoRepo.getUnitInfo(toUnit);
+
+        const fromDimension = fromUnitInfo?.dimension;
+        const toDimension = toUnitInfo?.dimension;
+
+        if (fromDimension !== toDimension) {
+            return false;
+        }
+        
+        return true;
     }
 
     unitsAreConfigured(fromUnit: string, toUnit: string): boolean {
