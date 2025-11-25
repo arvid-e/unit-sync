@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "tsc && node ./dist/index.js",
     "test": "vitest",
-    "prettier:check": "prettier --check ."
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
