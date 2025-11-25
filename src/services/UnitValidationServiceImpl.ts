@@ -57,6 +57,10 @@ export class UnitValidationServiceImpl implements UnitValidationService{
         const fromDimension = fromUnitInfo?.dimension;
         const toDimension = toUnitInfo?.dimension;
 
+        if (!fromDimension || !toDimension) {
+            return false;
+        }
+
         if (fromDimension !== toDimension) {
             return false;
         }
