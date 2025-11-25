@@ -38,8 +38,24 @@ export class UnitValidationServiceImpl implements UnitValidationService{
         }
     }
 
-    isConversionPossible(value: number, dimension: string): boolean {
-        return false;
+    isConversionPossible(value: number, unit: string): boolean {
+        const unitInfo = this.unitInfoRepo.getUnitInfo(unit);
+
+        const dimension = unitInfo?.dimension;
+        const validUnit = unitInfo?.unit;
+
+        if (dimension !== "temperature" && value < 1) {
+            return false;
+        }
+
+        if (validUnit === "celsius" && value < -273 ) {
+            return false;
+        } else if (validUnit === "fahrenheit" && value < -459) {
+            return false;
+        }
+
+
+        return true;
     }
 
     unitsHaveSameDimension(fromUnit: string, toUnit: string): boolean {
