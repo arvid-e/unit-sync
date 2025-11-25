@@ -12,11 +12,7 @@ export class UnitValidationServiceImpl implements UnitValidationService{
     }
 
     isValidValue(value: number): boolean {
-        if (isNaN(value) || value === 0 || value === Infinity) {
-            return false;
-        } else {
-            return true;
-        }
+        return isNaN(value) || value === 0 || value === Infinity ? false : true;
     }
 
     isValidUnit(unit: string): boolean {
