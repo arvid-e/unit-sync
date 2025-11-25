@@ -16,22 +16,11 @@ export class UnitValidationServiceImpl implements UnitValidationService{
     }
 
     isValidUnit(unit: string): boolean {
-        if (!unit) {
+        if (!unit || unit.trim().length === 0) {
             return false;
         }
 
-        const trimmedUnit = unit.trim();
-
-        if (trimmedUnit.length < 1) {
-            return false;
-        }
-
-
-        if (this.unitInfoRepo.getUnitInfo(unit)) {
-            return true;
-        } else {
-            return false;
-        }
+        return !!this.unitInfoRepo.getUnitInfo(unit);
     }
 
     isConversionPossible(value: number, unit: string): boolean {
