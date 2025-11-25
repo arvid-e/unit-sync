@@ -24,18 +24,26 @@ export class UnitValidationServiceImpl implements UnitValidationService{
     }
 
     isConversionPossible(value: number, unit: string): boolean {
+        const celsiusAbsoluteZero = -273.15;
+        const fahrenheitAbsoluteZero = -459.67;
+
         const unitInfo = this.unitInfoRepo.getUnitInfo(unit);
 
-        const dimension = unitInfo?.dimension;
-        const validUnit = unitInfo?.unit;
-
-        if (dimension !== "temperature" && value < 1) {
+        if (!unitInfo) {
             return false;
         }
 
-        if (validUnit === "celsius" && value < -273 ) {
+        const { dimension, unit: canonicalUnit } = unitInfo;
+
+        if (dimension !== "temperature" && value <= 0) {
             return false;
-        } else if (validUnit === "fahrenheit" && value < -459) {
+        }
+
+        if (canonicalUnit === "celsius" && value < celsiusAbsoluteZero) {
+            return false;
+        } 
+        
+        if (canonicalUnit === "fahrenheit" && value < fahrenheitAbsoluteZero) {
             return false;
         }
 
