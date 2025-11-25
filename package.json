@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc && node ./dist/index.js",
-    "test": "vitest"
+    "test": "vitest",
+    "prettier:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
