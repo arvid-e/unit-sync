@@ -20,7 +20,22 @@ export class UnitValidationServiceImpl implements UnitValidationService{
     }
 
     isValidUnit(unit: string): boolean {
-        return false;
+        if (!unit) {
+            return false;
+        }
+
+        const trimmedUnit = unit.trim();
+
+        if (trimmedUnit.length < 1) {
+            return false;
+        }
+
+
+        if (this.unitInfoRepo.getUnitInfo(unit)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     isConversionPossible(value: number, dimension: string): boolean {
