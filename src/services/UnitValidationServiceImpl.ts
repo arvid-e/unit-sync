@@ -54,7 +54,6 @@ export class UnitValidationServiceImpl implements UnitValidationService{
             return false;
         }
 
-
         return true;
     }
 
@@ -68,12 +67,22 @@ export class UnitValidationServiceImpl implements UnitValidationService{
         if (fromDimension !== toDimension) {
             return false;
         }
-        
+
         return true;
     }
 
     unitsAreConfigured(fromUnit: string, toUnit: string): boolean {
-        return false;
+        const fromUnitInfo = this.unitInfoRepo.getUnitInfo(fromUnit);
+        const toUnitInfo = this.unitInfoRepo.getUnitInfo(toUnit);
+
+        const fromUnitConfig = this.conversionConfigRepo.getConversionConfig(fromUnit);
+        const toUnitConfig = this.conversionConfigRepo.getConversionConfig(toUnit);
+
+        if (!fromUnitInfo || !toUnitInfo || !fromUnitConfig || !toUnitConfig) {
+            return false;
+        }
+
+        return true;
     }
 
 
