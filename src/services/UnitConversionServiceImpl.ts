@@ -13,7 +13,7 @@ export class UnitConversionServiceImpl implements UnitConversionService {
     const toUnitConfig = this.conversionConfigs.getConversionConfig(toUnit);
 
     if (!fromUnitConfig?.multiplier || !toUnitConfig?.multiplier) {
-      throw new Error('Conversion config multiplier missing.');
+      throw new Error('Conversion config is missing.');
     }
 
     const inputValueInBaseUnit = value * fromUnitConfig.multiplier + fromUnitConfig.offset;

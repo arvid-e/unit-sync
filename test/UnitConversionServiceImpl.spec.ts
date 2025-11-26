@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { UnitConversionServiceImpl } from '../src/services/UnitConversionServiceImpl';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ConversionConfigRepository } from '../src/interfaces/ConversionConfigRepository';
-import { format } from 'path';
+import { UnitConversionServiceImpl } from '../src/services/UnitConversionServiceImpl';
 
 describe('UnitConversionService', () => {
   let mockConversionConfigRepo: ConversionConfigRepository;
@@ -12,16 +11,23 @@ describe('UnitConversionService', () => {
       getConversionConfig: vi.fn(),
     };
 
+    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
+      if (unit === 'kilogram') return { multiplier: 1, offset: 0 };
+      if (unit === 'pound') return { multiplier: 0.453592, offset: 0 };
+      if (unit === 'kilometer') return { multiplier: 1000, offset: 0 };
+      if (unit === 'meter') return { multiplier: 1, offset: 0 };
+      if (unit === 'mile') return { multiplier: 1609.34, offset: 0 };
+      if (unit === 'celsius') return { multiplier: 1, offset: 0 };
+      if (unit === 'fahrenheit') return { multiplier: 0.55555555, offset: -17.7777777 };
+      if (unit === 'liter') return { multiplier: 1, offset: 0 };
+      if (unit === 'gallon') return { multiplier: 3.78541, offset: 0 };
+      return undefined;
+    });
+
     unitConversionServiceImpl = new UnitConversionServiceImpl(mockConversionConfigRepo);
   });
 
   it('should convert 15 miles to kilometers', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'kilometer') return { multiplier: 1000, offset: 0 };
-      if (unit === 'mile') return { multiplier: 1609.34, offset: 0 };
-      return undefined;
-    });
-
     const inputValue = 15;
     const fromUnitOffset = 0;
     const toUnitOffset = 0;
@@ -38,12 +44,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should convert 20 kilometers to miles', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'kilometer') return { multiplier: 1000, offset: 0 };
-      if (unit === 'mile') return { multiplier: 1609.34, offset: 0 };
-      return undefined;
-    });
-
     const inputValue = 20;
     const fromUnitOffset = 0;
     const toUnitOffset = 0;
@@ -60,12 +60,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should convert 70 fahrenheit to celsius', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'celsius') return { multiplier: 1, offset: 0 };
-      if (unit === 'fahrenheit') return { multiplier: 0.55555555, offset: -17.7777777 };
-      return undefined;
-    });
-
     const inputValue = 70;
     const fromUnitOffset = -17.7777777;
     const toUnitOffset = 0;
@@ -82,12 +76,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should convert 28 celsius to fahrenheit', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'celsius') return { multiplier: 1, offset: 0 };
-      if (unit === 'fahrenheit') return { multiplier: 0.55555555, offset: -17.7777777 };
-      return undefined;
-    });
-
     const inputValue = 28;
     const fromUnitOffset = 0;
     const toUnitOffset = -17.7777777;
@@ -104,12 +92,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should convert 50 pounds to kilogram', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'kilogram') return { multiplier: 1, offset: 0 };
-      if (unit === 'pound') return { multiplier: 0.453592, offset: 0 };
-      return undefined;
-    });
-
     const inputValue = 50;
     const fromUnitOffset = 0;
     const toUnitOffset = 0;
@@ -126,12 +108,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should convert 25 kilogram to pounds', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'kilogram') return { multiplier: 1, offset: 0 };
-      if (unit === 'pound') return { multiplier: 0.453592, offset: 0 };
-      return undefined;
-    });
-
     const inputValue = 25;
     const fromUnitOffset = 0;
     const toUnitOffset = 0;
@@ -148,12 +124,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should convert 25 gallons to liter', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'liter') return { multiplier: 1, offset: 0 };
-      if (unit === 'gallon') return { multiplier: 3.78541, offset: 0 };
-      return undefined;
-    });
-
     const inputValue = 25;
     const fromUnitOffset = 0;
     const toUnitOffset = 0;
@@ -170,12 +140,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should convert 45 liter to gallons', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'liter') return { multiplier: 1, offset: 0 };
-      if (unit === 'gallon') return { multiplier: 3.78541, offset: 0 };
-      return undefined;
-    });
-
     const inputValue = 45;
     const fromUnitOffset = 0;
     const toUnitOffset = 0;
@@ -192,11 +156,6 @@ describe('UnitConversionService', () => {
   });
 
   it('should return original value when fromUnit and to toUnit are the same', () => {
-    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'meter') return { multiplier: 1, offset: 0 };
-      return undefined;
-    });
-
     const inputValue = 25;
     const expectedValue = inputValue;
     const convertedValue = unitConversionServiceImpl.calculate(inputValue, 'meter', 'meter');
@@ -207,7 +166,6 @@ describe('UnitConversionService', () => {
 
   it('should throw error if config multiplier is missing', () => {
     (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
-      if (unit === 'liter') return { multiplier: 1, offset: 0 };
       if (unit === 'gallon') return { multiplier: undefined, offset: 0 };
       return undefined;
     });
@@ -216,7 +174,9 @@ describe('UnitConversionService', () => {
     const fromUnit = 'liter';
     const toUnit = 'gallon';
 
-    expect(() => unitConversionServiceImpl.calculate(inputValue, fromUnit, toUnit)).toThrow('Conversion config multiplier missing.')
+    expect(() => unitConversionServiceImpl.calculate(inputValue, fromUnit, toUnit)).toThrow(
+      'Conversion config is missing.',
+    );
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
   });
 });
