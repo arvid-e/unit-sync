@@ -30,7 +30,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedLength = unitConversionServiceImpl.convert(inputValue, 'mile', 'kilometer');
+    const convertedLength = unitConversionServiceImpl.calculate(inputValue, 'mile', 'kilometer');
 
     expect(convertedLength).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -52,7 +52,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedLength = unitConversionServiceImpl.convert(inputValue, 'kilometer', 'mile');
+    const convertedLength = unitConversionServiceImpl.calculate(inputValue, 'kilometer', 'mile');
 
     expect(convertedLength).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -74,7 +74,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedTemperature = unitConversionServiceImpl.convert(inputValue, 'fahrenheit', 'celsius');
+    const convertedTemperature = unitConversionServiceImpl.calculate(inputValue, 'fahrenheit', 'celsius');
 
     expect(convertedTemperature).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -96,7 +96,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedTemperature = unitConversionServiceImpl.convert(inputValue, 'celsius', 'fahrenheit');
+    const convertedTemperature = unitConversionServiceImpl.calculate(inputValue, 'celsius', 'fahrenheit');
 
     expect(convertedTemperature).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -118,7 +118,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedMass = unitConversionServiceImpl.convert(inputValue, 'pound', 'kilogram');
+    const convertedMass = unitConversionServiceImpl.calculate(inputValue, 'pound', 'kilogram');
 
     expect(convertedMass).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -140,7 +140,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedMass = unitConversionServiceImpl.convert(inputValue, 'kilogram', 'pound');
+    const convertedMass = unitConversionServiceImpl.calculate(inputValue, 'kilogram', 'pound');
 
     expect(convertedMass).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -162,7 +162,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedVolume = unitConversionServiceImpl.convert(inputValue, 'gallon', 'liter');
+    const convertedVolume = unitConversionServiceImpl.calculate(inputValue, 'gallon', 'liter');
 
     expect(convertedVolume).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -184,7 +184,7 @@ describe('UnitConversionService', () => {
     const inputValueInBaseUnit = inputValue * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
 
-    const convertedVolume = unitConversionServiceImpl.convert(inputValue, 'liter', 'gallon');
+    const convertedVolume = unitConversionServiceImpl.calculate(inputValue, 'liter', 'gallon');
 
     expect(convertedVolume).toBeCloseTo(expectedResult);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
@@ -198,7 +198,7 @@ describe('UnitConversionService', () => {
 
     const inputValue = 25;
     const expectedValue = inputValue;
-    const convertedValue = unitConversionServiceImpl.convert(inputValue, 'meter', 'meter');
+    const convertedValue = unitConversionServiceImpl.calculate(inputValue, 'meter', 'meter');
 
     expect(convertedValue).toBeCloseTo(expectedValue);
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);

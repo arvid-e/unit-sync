@@ -8,7 +8,7 @@ export class UnitConversionServiceImpl implements UnitConversionService {
     this.conversionConfigs = conversionConfigs;
   }
 
-  convert(value: number, fromUnit: string, toUnit: string): number {
+  calculate(value: number, fromUnit: string, toUnit: string): number {
     const fromUnitConfig = this.conversionConfigs.getConversionConfig(fromUnit);
     const toUnitConfig = this.conversionConfigs.getConversionConfig(toUnit);
 
