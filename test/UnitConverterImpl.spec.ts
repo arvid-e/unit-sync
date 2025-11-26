@@ -45,6 +45,7 @@ describe('UnitConverter', () => {
     const result = unitConverter.convert(value, fromUnit, toUnit);
 
     expect(result).toBe(expectedResult);
+
     expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isValidUnit).toHaveBeenCalledTimes(1);
     expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
@@ -59,6 +60,7 @@ describe('UnitConverter', () => {
 
     expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Conversion configuration not found.');
 
+    expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isValidValue).not.toHaveBeenCalled();
     expect(mockValidationService.isConversionPossible).not.toHaveBeenCalled();
     expect(mockValidationService.unitsHaveSameDimension).not.toHaveBeenCalled();
@@ -69,7 +71,7 @@ describe('UnitConverter', () => {
     mockValidationService.isValidValue.mockReturnValue(false);
 
     expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Value to convert is invalid.');
-    
+
     expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isConversionPossible).not.toHaveBeenCalled();
@@ -81,7 +83,7 @@ describe('UnitConverter', () => {
     mockValidationService.isConversionPossible.mockReturnValue(false);
 
     expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Unit has an impossible value.');
-    
+
     expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isConversionPossible).toHaveBeenCalledTimes(1);
@@ -89,11 +91,11 @@ describe('UnitConverter', () => {
     expect(mockConversionService.calculate).not.toHaveBeenCalled();
   });
 
-  it('should stop execution and throw error if isConversionPossible fails (Fourth guard)', () => {
+  it('should stop execution and throw error if unitsHaveSameDimension fails (Fourth guard)', () => {
     mockValidationService.unitsHaveSameDimension.mockReturnValue(false);
 
     expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Unit must be of the same dimension.');
-    
+
     expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isConversionPossible).toHaveBeenCalledTimes(1);
