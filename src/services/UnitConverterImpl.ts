@@ -26,6 +26,10 @@ export class UnitConverterImpl implements UnitConverter {
 
     const conversionIsPossible = this.unitValidationService.isConversionPossible(value, fromUnit);
 
+    if (!conversionIsPossible) {
+        throw new Error('Unit has an impossible value.');
+    }
+
     const unitsHaveSameDimension = this.unitValidationService.unitsHaveSameDimension(fromUnit, toUnit);
 
     return this.unitConversionService.calculate(value, fromUnit, toUnit);
