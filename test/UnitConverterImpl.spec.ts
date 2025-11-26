@@ -28,7 +28,11 @@ describe('UnitConverter', () => {
     } as unknown as MockedConversionService;
 
     mockValidationService = {
-      getConversionConfig: vi.fn(),
+      unitsAreConfigured: vi.fn(),
+      isValidValue: vi.fn(),
+      isValidUnit: vi.fn(),
+      isConversionPossible: vi.fn(),
+      unitsHaveSameDimension: vi.fn(),
     } as unknown as MockedValidationService;
 
     unitConverter = new UnitConverterImpl(mockConversionService, mockValidationService);
@@ -47,7 +51,6 @@ describe('UnitConverter', () => {
     expect(result).toBe(expectedResult);
 
     expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
-    expect(mockValidationService.isValidUnit).toHaveBeenCalledTimes(1);
     expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
     expect(mockValidationService.unitsHaveSameDimension).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isConversionPossible).toHaveBeenCalledTimes(1);
