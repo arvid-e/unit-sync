@@ -41,5 +41,16 @@ describe('UnitConverter', () => {
     mockConversionService.calculate.mockReturnValue(expectedResult);
   });
 
+  it('should call all validation methods and perform the calculation if input is valid', () => {
+    const result = unitConverter.convert(value, fromUnit, toUnit);
 
+    expect(result).toBe(expectedResult);
+    expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
+    expect(mockValidationService.isValidUnit).toHaveBeenCalledTimes(1);
+    expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
+    expect(mockValidationService.unitsHaveSameDimension).toHaveBeenCalledTimes(1);
+    expect(mockValidationService.isConversionPossible).toHaveBeenCalledTimes(1);
+    expect(mockConversionService.calculate).toHaveBeenCalledTimes(1);
+    expect(mockConversionService.calculate).toHaveBeenCalledWith(value, fromUnit, toUnit);
+  });
 });
