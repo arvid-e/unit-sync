@@ -32,6 +32,10 @@ export class UnitConverterImpl implements UnitConverter {
 
     const unitsHaveSameDimension = this.unitValidationService.unitsHaveSameDimension(fromUnit, toUnit);
 
+    if (!unitsHaveSameDimension) {
+        throw new Error('Unit must be of the same dimension.');
+    }
+
     return this.unitConversionService.calculate(value, fromUnit, toUnit);
   }
 }
