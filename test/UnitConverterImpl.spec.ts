@@ -54,12 +54,23 @@ describe('UnitConverter', () => {
     expect(mockConversionService.calculate).toHaveBeenCalledWith(value, fromUnit, toUnit);
   });
 
-  it('should stop execution and throw error if unitsAreConfigured fails', () => {
+  it('should stop execution and throw error if unitsAreConfigured fails (First guard)', () => {
     mockValidationService.unitsAreConfigured.mockReturnValue(false);
 
     expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Conversion configuration not found.');
-    
+
     expect(mockValidationService.isValidValue).not.toHaveBeenCalled();
+    expect(mockValidationService.isConversionPossible).not.toHaveBeenCalled();
+    expect(mockValidationService.unitsHaveSameDimension).not.toHaveBeenCalled();
+    expect(mockConversionService.calculate).not.toHaveBeenCalled();
+  });
+
+  it('should stop execution and throw error if isValidValue fails (Second guard)', () => {
+    mockValidationService.unitsAreConfigured.mockReturnValue(false);
+
+    expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Value to convert is invalid.');
+    
+    expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isConversionPossible).not.toHaveBeenCalled();
     expect(mockValidationService.unitsHaveSameDimension).not.toHaveBeenCalled();
     expect(mockConversionService.calculate).not.toHaveBeenCalled();
