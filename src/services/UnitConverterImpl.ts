@@ -14,6 +14,10 @@ export class UnitConverterImpl implements UnitConverter {
   convert(value: number, fromUnit: string, toUnit: string): number {
     const unitsAreConfigured = this.unitValidationService.unitsAreConfigured(fromUnit, toUnit);
 
+    if (!unitsAreConfigured) {
+        throw new Error('Conversion configuration not found.');
+    }
+
     const valueIsValid = this.unitValidationService.isValidValue(value);
 
     const conversionIsPossible = this.unitValidationService.isConversionPossible(value, fromUnit);
