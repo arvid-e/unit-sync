@@ -20,6 +20,10 @@ export class UnitConverterImpl implements UnitConverter {
 
     const valueIsValid = this.unitValidationService.isValidValue(value);
 
+    if (!valueIsValid) {
+        throw new Error('Value to convert is invalid.');
+    }
+
     const conversionIsPossible = this.unitValidationService.isConversionPossible(value, fromUnit);
 
     const unitsHaveSameDimension = this.unitValidationService.unitsHaveSameDimension(fromUnit, toUnit);
