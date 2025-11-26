@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UnitConversionServiceImpl } from '../src/services/UnitConversionServiceImpl';
 import { ConversionConfigRepository } from '../src/interfaces/ConversionConfigRepository';
+import { format } from 'path';
 
 describe('UnitConversionService', () => {
   let mockConversionConfigRepo: ConversionConfigRepository;
@@ -201,6 +202,21 @@ describe('UnitConversionService', () => {
     const convertedValue = unitConversionServiceImpl.calculate(inputValue, 'meter', 'meter');
 
     expect(convertedValue).toBeCloseTo(expectedValue);
+    expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
+  });
+
+  it('should throw error if config multiplier is missing', () => {
+    (mockConversionConfigRepo.getConversionConfig as any).mockImplementation((unit: string) => {
+      if (unit === 'liter') return { multiplier: 1, offset: 0 };
+      if (unit === 'gallon') return { multiplier: undefined, offset: 0 };
+      return undefined;
+    });
+
+    const inputValue = 45;
+    const fromUnit = 'liter';
+    const toUnit = 'gallon';
+
+    expect(() => unitConversionServiceImpl.calculate(inputValue, fromUnit, toUnit)).toThrow('Conversion config multiplier missing.')
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
   });
 });
