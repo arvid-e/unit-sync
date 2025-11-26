@@ -66,12 +66,25 @@ describe('UnitConverter', () => {
   });
 
   it('should stop execution and throw error if isValidValue fails (Second guard)', () => {
-    mockValidationService.unitsAreConfigured.mockReturnValue(false);
+    mockValidationService.isValidValue.mockReturnValue(false);
 
     expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Value to convert is invalid.');
     
     expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
+    expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
     expect(mockValidationService.isConversionPossible).not.toHaveBeenCalled();
+    expect(mockValidationService.unitsHaveSameDimension).not.toHaveBeenCalled();
+    expect(mockConversionService.calculate).not.toHaveBeenCalled();
+  });
+
+  it('should stop execution and throw error if isConversionPossible fails (Third guard)', () => {
+    mockValidationService.isConversionPossible.mockReturnValue(false);
+
+    expect(() => unitConverter.convert(value, fromUnit, toUnit)).toThrow('Units must be of the same dimension.');
+    
+    expect(mockValidationService.unitsAreConfigured).toHaveBeenCalledTimes(1);
+    expect(mockValidationService.isValidValue).toHaveBeenCalledTimes(1);
+    expect(mockValidationService.isConversionPossible).toHaveBeenCalledTimes(1);
     expect(mockValidationService.unitsHaveSameDimension).not.toHaveBeenCalled();
     expect(mockConversionService.calculate).not.toHaveBeenCalled();
   });
