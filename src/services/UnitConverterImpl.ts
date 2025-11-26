@@ -12,30 +12,26 @@ export class UnitConverterImpl implements UnitConverter {
   }
 
   convert(value: number, fromUnit: string, toUnit: string): number {
-    const unitsAreConfigured = this.unitValidationService.unitsAreConfigured(fromUnit, toUnit);
-
-    if (!unitsAreConfigured) {
-        throw new Error('Conversion configuration not found.');
-    }
-
-    const valueIsValid = this.unitValidationService.isValidValue(value);
-
-    if (!valueIsValid) {
-        throw new Error('Value to convert is invalid.');
-    }
-
-    const conversionIsPossible = this.unitValidationService.isConversionPossible(value, fromUnit);
-
-    if (!conversionIsPossible) {
-        throw new Error('Unit has an impossible value.');
-    }
-
-    const unitsHaveSameDimension = this.unitValidationService.unitsHaveSameDimension(fromUnit, toUnit);
-
-    if (!unitsHaveSameDimension) {
-        throw new Error('Unit must be of the same dimension.');
-    }
+    this.validate(value, fromUnit, toUnit);
 
     return this.unitConversionService.calculate(value, fromUnit, toUnit);
+  }
+
+  validate(value: number, fromUnit: string, toUnit: string): void {
+    if (!this.unitValidationService.unitsAreConfigured(fromUnit, toUnit)) {
+      throw new Error('Conversion configuration not found.');
+    }
+
+    if (!this.unitValidationService.isValidValue(value)) {
+      throw new Error('Value to convert is invalid.');
+    }
+
+    if (!this.unitValidationService.isConversionPossible(value, fromUnit)) {
+      throw new Error('Unit has an impossible value.');
+    }
+
+    if (!this.unitValidationService.unitsHaveSameDimension(fromUnit, toUnit)) {
+      throw new Error('Unit must be of the same dimension.');
+    }
   }
 }
