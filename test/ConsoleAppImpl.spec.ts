@@ -85,5 +85,17 @@ describe('ConsoleAppImpl', () => {
       expect(mockConsoleIO.printOutput).toHaveBeenCalledWith(expectedOutput);
       expect(mockConsoleIO.printError).not.toHaveBeenCalled();
     });
+
+    it('should call the printError method on unsuccessful conversion', () => {
+      const errorInputPayload = {
+        value: undefined,
+        fromUnit: '',
+        toUnit: 'invalid',
+      }
+      processConversion(errorInputPayload);
+      expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
+      expect(mockConsoleIO.printError).toHaveBeenCalledTimes(1);
+      expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
+    });
   });
 });
