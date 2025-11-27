@@ -128,6 +128,16 @@ describe('UnitValidationService', () => {
       expect(validDimensions).toBe(false);
       expect(mockUnitInfoRepo.getUnitInfo).toHaveBeenCalledTimes(2);
     });
+
+    it('should return false on invalid dimension', () => {
+      const firstDimension = 'invalid_dimensions';
+      const secondDimension = 'pound';
+
+      const validDimensions = unitValidationServiceImpl.unitsHaveSameDimension(firstDimension, secondDimension);
+
+      expect(validDimensions).toBe(false);
+      expect(mockUnitInfoRepo.getUnitInfo).toHaveBeenCalledTimes(2);
+    });
   });
 
   describe('isConversionPossible()', () => {
@@ -171,9 +181,19 @@ describe('UnitValidationService', () => {
       expect(mockUnitInfoRepo.getUnitInfo).toHaveBeenCalledTimes(1);
     });
 
-    it('should return false on invalid negative temperature', () => {
+    it('should return false on invalid negative temperature (-300 celsius)', () => {
       const inputValue = -300;
       const unit = 'celsius';
+
+      const validDimensions = unitValidationServiceImpl.isConversionPossible(inputValue, unit);
+
+      expect(validDimensions).toBe(false);
+      expect(mockUnitInfoRepo.getUnitInfo).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return false on invalid negative temperature (-500 fahrenheit)', () => {
+      const inputValue = -500;
+      const unit = 'fahrenheit';
 
       const validDimensions = unitValidationServiceImpl.isConversionPossible(inputValue, unit);
 
@@ -184,6 +204,16 @@ describe('UnitValidationService', () => {
     it('should return false on negative physical dimension', () => {
       const inputValue = -1;
       const unit = 'kilogram';
+
+      const validDimensions = unitValidationServiceImpl.isConversionPossible(inputValue, unit);
+
+      expect(validDimensions).toBe(false);
+      expect(mockUnitInfoRepo.getUnitInfo).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return false when unit info is not found', () => {
+      const inputValue = 10;
+      const unit = 'not_existing_unit';
 
       const validDimensions = unitValidationServiceImpl.isConversionPossible(inputValue, unit);
 
