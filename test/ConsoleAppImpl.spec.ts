@@ -1,12 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { UnitConverter } from '../src/interfaces/UnitConverter';
+import { ConsoleIO } from '../src/interfaces/ConsoleIO';
 import { ConsoleAppImpl } from '../src/services/ConsoleAppImpl';
 import { ParsingError } from '../src/types/ErrorTypes';
 
 type MockUnitConverter = UnitConverter & { convert: ReturnType<typeof vi.fn> };
+type MockConsoleIO = ConsoleIO & { 
+    printOutput: ReturnType<typeof vi.fn>,
+    printError: ReturnType<typeof vi.fn>,
+    readInput: ReturnType<typeof vi.fn>,
+    exit: ReturnType<typeof vi.fn>,
+};
 
 describe('ConsoleAppImpl', () => {
   let mockUnitConverter: MockUnitConverter;
+  let mockConsoleIO: MockConsoleIO;
   let consoleAppImpl: ConsoleAppImpl;
 
   beforeEach(() => {
@@ -14,10 +22,17 @@ describe('ConsoleAppImpl', () => {
       convert: vi.fn(),
     } as unknown as MockUnitConverter;
 
+    mockConsoleIO = {
+      printOutput: vi.fn(),
+      printError: vi.fn(),
+      readInput: vi.fn(),
+      exit: vi.fn(),
+    } as unknown as MockConsoleIO;
+
     consoleAppImpl = new ConsoleAppImpl(mockUnitConverter);
   });
 
-  describe('parseCommand', () => {
+  describe('parseCommand()', () => {
     const parseCommand = (input: string) => {
       return (consoleAppImpl as any).parseCommand(input);
     };
