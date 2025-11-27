@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ParsingError } from '../src/error/ParsingError';
 import { ConsoleIO } from '../src/interfaces/ConsoleIO';
 import { UnitConverter } from '../src/interfaces/UnitConverter';
 import { ConsoleAppImpl } from '../src/services/ConsoleAppImpl';
-import { ParsingError } from '../src/types/ErrorTypes';
+import { InputPayload } from '../src/types/UnitTypes';
 
 type MockUnitConverter = UnitConverter & { convert: ReturnType<typeof vi.fn> };
 type MockConsoleIO = ConsoleIO & {
@@ -66,10 +67,10 @@ describe('ConsoleAppImpl', () => {
     };
 
     const inputPayload = {
-        value: 500,
-        fromUnit: 'yard',
-        toUnit: 'kilometer',
-      };
+      value: 500,
+      fromUnit: 'yard',
+      toUnit: 'kilometer',
+    };
 
     const expectedOutput = 'Result: 0.4572 kilometer';
 
@@ -88,10 +89,11 @@ describe('ConsoleAppImpl', () => {
 
     it('should call the printError method on unsuccessful conversion', () => {
       const errorInputPayload = {
-        value: undefined,
+        value: -1,
         fromUnit: '',
         toUnit: 'invalid',
-      }
+      };
+      
       processConversion(errorInputPayload);
       expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
       expect(mockConsoleIO.printError).toHaveBeenCalledTimes(1);
