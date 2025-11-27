@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { UnitConverter } from '../src/interfaces/UnitConverter';
 import { ConsoleAppImpl } from '../src/services/ConsoleAppImpl';
+import { ParsingError } from '../src/types/ErrorTypes';
 
 type MockUnitConverter = UnitConverter & { convert: ReturnType<typeof vi.fn> };
 
@@ -21,7 +22,7 @@ describe('ConsoleAppImpl', () => {
       return (consoleAppImpl as any).parseCommand(input);
     };
 
-    it('should return the input payload from a correct input string', () => {
+    it('should return the input payload on a correct input string', () => {
       const inputString = '500 yard to meter';
 
       const expectedResult = {
@@ -33,6 +34,13 @@ describe('ConsoleAppImpl', () => {
       const result = parseCommand(inputString);
 
       expect(result).toEqual(expectedResult);
+      expect(consoleAppImpl.parseCommand).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw a ParseError if input string is incorrect', () => {
+      const inputString = '500 to yard';
+
+      expect(() => parseCommand(inputString)).toThrow(ParsingError);
       expect(consoleAppImpl.parseCommand).toHaveBeenCalledTimes(1);
     });
   });
