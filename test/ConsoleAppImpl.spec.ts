@@ -93,7 +93,7 @@ describe('ConsoleAppImpl', () => {
         fromUnit: '',
         toUnit: 'invalid',
       };
-      
+
       processConversion(errorInputPayload);
       expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
       expect(mockConsoleIO.printError).toHaveBeenCalledTimes(1);

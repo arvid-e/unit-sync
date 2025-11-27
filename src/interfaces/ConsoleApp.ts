@@ -1,3 +1,3 @@
 export interface ConsoleApp {
-    run(): Promise<void>;
+  run(): Promise<void>;
 }
