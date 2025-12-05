@@ -60,11 +60,11 @@ describe('ConsoleAppImpl', () => {
   });
 
   describe('processConversion()', () => {
-    const processConversion = (inputPayload: ConversionPayload) => {
-      return (consoleAppImpl as any).processConversion(inputPayload);
+    const processConversion = (conversionPayload: ConversionPayload) => {
+      return (consoleAppImpl as any).processConversion(conversionPayload);
     };
 
-    const inputPayload = {
+    const conversionPayload = {
       value: 500,
       fromUnit: 'yard',
       toUnit: 'kilometer',
@@ -73,13 +73,11 @@ describe('ConsoleAppImpl', () => {
     const expectedOutput = 'Result: 0.4572 kilometer';
 
     it('should call the printOutput method on successful conversion', () => {
-      processConversion(inputPayload);
+      mockUnitConverter.convert.mockReturnValue(0.4572); 
+      processConversion(conversionPayload);
+
       expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
-      expect(mockUnitConverter.convert).toHaveBeenCalledWith(
-        inputPayload.value,
-        inputPayload.fromUnit,
-        inputPayload.toUnit,
-      );
+      expect(mockUnitConverter.convert).toHaveBeenCalledWith(conversionPayload);
       expect(mockConsoleIO.printOutput).toHaveBeenCalledTimes(1);
       expect(mockConsoleIO.printOutput).toHaveBeenCalledWith(expectedOutput);
       expect(mockConsoleIO.printError).not.toHaveBeenCalled();
