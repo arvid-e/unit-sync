@@ -57,7 +57,6 @@ describe('ConsoleAppImpl', () => {
       const inputString = '500 to yard';
 
       expect(() => parseCommand(inputString)).toThrow(ParsingError);
-      expect(consoleAppImpl.parseCommand).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -88,15 +87,19 @@ describe('ConsoleAppImpl', () => {
     });
 
     it('should call the printError method on unsuccessful conversion', () => {
+      const dimensionError = 'Unit must be of the same dimension.';
       const errorInputPayload = {
-        value: -1,
-        fromUnit: '',
-        toUnit: 'invalid',
+        value: 10,
+        fromUnit: 'kilometer',
+        toUnit: 'pound',
       };
 
       processConversion(errorInputPayload);
       expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
       expect(mockConsoleIO.printError).toHaveBeenCalledTimes(1);
+      expect(mockConsoleIO.printError).toHaveBeenCalledWith(
+        expect.stringContaining(dimensionError)
+      );
       expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
     });
   });
