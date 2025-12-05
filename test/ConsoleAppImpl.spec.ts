@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ConversionError } from '../src/error/ConversionError';
 import { ParsingError } from '../src/error/ParsingError';
 import { ConsoleIO } from '../src/interfaces/ConsoleIO';
 import { UnitConverter } from '../src/interfaces/UnitConverter';
@@ -73,7 +74,7 @@ describe('ConsoleAppImpl', () => {
     const expectedOutput = 'Result: 0.4572 kilometer';
 
     it('should call the printOutput method on successful conversion', () => {
-      mockUnitConverter.convert.mockReturnValue(0.4572); 
+      mockUnitConverter.convert.mockReturnValue(0.4572);
       processConversion(conversionPayload);
 
       expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
@@ -91,12 +92,14 @@ describe('ConsoleAppImpl', () => {
         toUnit: 'pound',
       };
 
+      mockUnitConverter.convert.mockImplementationOnce(() => {
+        throw new ConversionError(dimensionError);
+      });
       processConversion(errorInputPayload);
+
       expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
       expect(mockConsoleIO.printError).toHaveBeenCalledTimes(1);
-      expect(mockConsoleIO.printError).toHaveBeenCalledWith(
-        expect.stringContaining(dimensionError)
-      );
+      expect(mockConsoleIO.printError).toHaveBeenCalledWith(expect.stringContaining(dimensionError));
       expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
     });
   });
