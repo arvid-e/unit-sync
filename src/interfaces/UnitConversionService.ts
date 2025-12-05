@@ -1,3 +1,5 @@
+import type { ConversionPayload } from "../types/UnitTypes.js";
+
 export interface UnitConversionService {
-  calculate(value: number, fromUnit: string, toUnit: string): number;
+  calculate(conversionPayload: ConversionPayload): number;
 }

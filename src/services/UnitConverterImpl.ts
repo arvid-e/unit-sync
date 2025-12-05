@@ -1,6 +1,7 @@
 import type { UnitConversionService } from '../interfaces/UnitConversionService.js';
 import type { UnitConverter } from '../interfaces/UnitConverter.js';
 import type { UnitValidationService } from '../interfaces/UnitValidationService.js';
+import type { ConversionPayload } from '../types/UnitTypes.js';
 
 export class UnitConverterImpl implements UnitConverter {
   unitConversionService: UnitConversionService;
@@ -11,13 +12,15 @@ export class UnitConverterImpl implements UnitConverter {
     this.unitValidationService = unitValidationService;
   }
 
-  convert(value: number, fromUnit: string, toUnit: string): number {
-    this.validate(value, fromUnit, toUnit);
+  convert(conversionPayload: ConversionPayload): number {
+    this.validate(conversionPayload);
 
-    return this.unitConversionService.calculate(value, fromUnit, toUnit);
+    return this.unitConversionService.calculate(conversionPayload);
   }
 
-  validate(value: number, fromUnit: string, toUnit: string): void {
+  validate(conversionPayload: ConversionPayload): void {
+    const { value, fromUnit, toUnit } = conversionPayload;
+    
     if (!this.unitValidationService.unitsAreConfigured(fromUnit, toUnit)) {
       throw new Error('Conversion configuration not found.');
     }

@@ -1,3 +1,5 @@
+import type { ConversionPayload } from "../types/UnitTypes.js";
+
 export interface UnitConverter {
-  convert(value: number, fromUnit: string, toUnit: string): number;
+  convert(conversionPayload: ConversionPayload): number;
 }

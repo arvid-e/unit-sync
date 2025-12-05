@@ -5,7 +5,7 @@ export interface UnitInfo {
   dimension: Dimension;
 }
 
-export type InputPayload = {
+export type ConversionPayload = {
   value: number;
   fromUnit: string;
   toUnit: string;

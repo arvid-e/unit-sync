@@ -1,5 +1,6 @@
-import type { UnitConversionService } from '../interfaces/UnitConversionService.js';
 import type { ConversionConfigRepository } from '../interfaces/ConversionConfigRepository.js';
+import type { UnitConversionService } from '../interfaces/UnitConversionService.js';
+import type { ConversionPayload } from '../types/UnitTypes.js';
 
 export class UnitConversionServiceImpl implements UnitConversionService {
   private readonly conversionConfigs: ConversionConfigRepository;
@@ -8,7 +9,8 @@ export class UnitConversionServiceImpl implements UnitConversionService {
     this.conversionConfigs = conversionConfigs;
   }
 
-  calculate(value: number, fromUnit: string, toUnit: string): number {
+  calculate(conversionPayload: ConversionPayload): number {
+    const { value, fromUnit, toUnit } = conversionPayload;
     const fromUnitConfig = this.conversionConfigs.getConversionConfig(fromUnit);
     const toUnitConfig = this.conversionConfigs.getConversionConfig(toUnit);
 
