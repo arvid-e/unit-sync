@@ -3,7 +3,7 @@ import { ParsingError } from '../src/error/ParsingError';
 import { ConsoleIO } from '../src/interfaces/ConsoleIO';
 import { UnitConverter } from '../src/interfaces/UnitConverter';
 import { ConsoleAppImpl } from '../src/services/ConsoleAppImpl';
-import { InputPayload } from '../src/types/UnitTypes';
+import { ConversionPayload } from '../src/types/UnitTypes';
 
 type MockUnitConverter = UnitConverter & { convert: ReturnType<typeof vi.fn> };
 type MockConsoleIO = ConsoleIO & {
@@ -50,7 +50,6 @@ describe('ConsoleAppImpl', () => {
       const result = parseCommand(inputString);
 
       expect(result).toEqual(expectedResult);
-      expect(consoleAppImpl.parseCommand).toHaveBeenCalledTimes(1);
     });
 
     it('should throw a ParseError if input string is incorrect', () => {
@@ -61,7 +60,7 @@ describe('ConsoleAppImpl', () => {
   });
 
   describe('processConversion()', () => {
-    const processConversion = (inputPayload: InputPayload) => {
+    const processConversion = (inputPayload: ConversionPayload) => {
       return (consoleAppImpl as any).processConversion(inputPayload);
     };
 
