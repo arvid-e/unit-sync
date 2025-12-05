@@ -1,6 +1,6 @@
 export interface ConsoleIO {
-  readInput(): void;
-  printOutput(): void;
-  printError(): void;
+  readInput(input: string): Promise<string>;
+  printOutput(output: string): void;
+  printError(error: string): void;
   exit(): void;
 }
