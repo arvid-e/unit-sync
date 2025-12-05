@@ -2,6 +2,7 @@ import type { UnitConversionService } from '../interfaces/UnitConversionService.
 import type { UnitConverter } from '../interfaces/UnitConverter.js';
 import type { UnitValidationService } from '../interfaces/UnitValidationService.js';
 import type { ConversionPayload } from '../types/UnitTypes.js';
+import { ConversionError } from '../error/ConversionError.js';
 
 export class UnitConverterImpl implements UnitConverter {
   unitConversionService: UnitConversionService;
@@ -20,21 +21,21 @@ export class UnitConverterImpl implements UnitConverter {
 
   validate(conversionPayload: ConversionPayload): void {
     const { value, fromUnit, toUnit } = conversionPayload;
-    
+
     if (!this.unitValidationService.unitsAreConfigured(fromUnit, toUnit)) {
-      throw new Error('Conversion configuration not found.');
+      throw new ConversionError('Conversion configuration not found.');
     }
 
     if (!this.unitValidationService.isValidValue(value)) {
-      throw new Error('Value to convert is invalid.');
+      throw new ConversionError('Value to convert is invalid.');
     }
 
     if (!this.unitValidationService.isConversionPossible(value, fromUnit)) {
-      throw new Error('Unit has an impossible value.');
+      throw new ConversionError('Unit has an impossible value.');
     }
 
     if (!this.unitValidationService.unitsHaveSameDimension(fromUnit, toUnit)) {
-      throw new Error('Unit must be of the same dimension.');
+      throw new ConversionError('Unit must be of the same dimension.');
     }
   }
 }
