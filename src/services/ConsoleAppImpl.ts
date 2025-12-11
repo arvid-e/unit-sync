@@ -27,7 +27,7 @@ export class ConsoleAppImpl implements ConsoleApp {
       if (error instanceof Error) {
         if (error instanceof ParsingError || error instanceof ConversionError) {
           this.consoleIO.printError(error.message);
-        } else if (error instanceof Error) {
+        } else {
           this.consoleIO.printError(`System Error: ${error.message}`);
         }
       } else {
