@@ -19,6 +19,14 @@ describe('ConsoleAppImpl', () => {
   let mockConsoleIO: MockConsoleIO;
   let consoleAppImpl: ConsoleAppImpl;
 
+  const parseCommand = (input: string) => {
+    return (consoleAppImpl as any).parseCommand(input);
+  };
+
+  const processConversion = (conversionPayload: ConversionPayload) => {
+    return (consoleAppImpl as any).processConversion(conversionPayload);
+  };
+
   beforeEach(() => {
     mockUnitConverter = {
       convert: vi.fn(),
@@ -35,10 +43,6 @@ describe('ConsoleAppImpl', () => {
   });
 
   describe('parseCommand()', () => {
-    const parseCommand = (input: string) => {
-      return (consoleAppImpl as any).parseCommand(input);
-    };
-
     it('should return the input payload on a correct input string', () => {
       const inputString = '500 yard to meter';
 
@@ -61,10 +65,6 @@ describe('ConsoleAppImpl', () => {
   });
 
   describe('processConversion()', () => {
-    const processConversion = (conversionPayload: ConversionPayload) => {
-      return (consoleAppImpl as any).processConversion(conversionPayload);
-    };
-
     const conversionPayload = {
       value: 500,
       fromUnit: 'yard',
@@ -84,9 +84,9 @@ describe('ConsoleAppImpl', () => {
       expect(mockConsoleIO.printError).not.toHaveBeenCalled();
     });
 
-    it('should call the printError method on unsuccessful conversion', () => {
+    it('should propagate error and stop execution on unsuccessful conversion', () => {
       const dimensionError = 'Unit must be of the same dimension.';
-      const errorInputPayload = {
+      const inputPayload = {
         value: 10,
         fromUnit: 'kilometer',
         toUnit: 'pound',
@@ -95,11 +95,29 @@ describe('ConsoleAppImpl', () => {
       mockUnitConverter.convert.mockImplementationOnce(() => {
         throw new ConversionError(dimensionError);
       });
-      processConversion(errorInputPayload);
+
+      // Propagate error to run() method
+      const throwingCall = () => processConversion(inputPayload);
+
+      expect(throwingCall).toThrow(new ConversionError(dimensionError));
+      expect(mockConsoleIO.printError).not.toHaveBeenCalled();
+      expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
+      expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw a generic Error on unknown error during conversion', () => {
+      const unknownMessage = 'Unknown error.';
+
+      mockUnitConverter.convert.mockImplementationOnce(() => {
+        throw new Error(unknownMessage);
+      });
+
+      const throwingCall = () => processConversion(conversionPayload);
+
+      expect(throwingCall).toThrow(new Error(unknownMessage));
 
       expect(mockUnitConverter.convert).toHaveBeenCalledTimes(1);
-      expect(mockConsoleIO.printError).toHaveBeenCalledTimes(1);
-      expect(mockConsoleIO.printError).toHaveBeenCalledWith(expect.stringContaining(dimensionError));
+      expect(mockConsoleIO.printError).not.toHaveBeenCalled();
       expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
     });
   });
