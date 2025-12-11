@@ -1,9 +1,9 @@
+import { ConversionError } from '../error/ConversionError.js';
 import { ParsingError } from '../error/ParsingError.js';
 import type { ConsoleApp } from '../interfaces/ConsoleApp.js';
 import type { ConsoleIO } from '../interfaces/ConsoleIO.js';
 import type { UnitConverter } from '../interfaces/UnitConverter.js';
 import type { ConversionPayload } from '../types/UnitTypes.js';
-import { ConversionError } from '../error/ConversionError.js';
 
 export class ConsoleAppImpl implements ConsoleApp {
   unitConverter: UnitConverter;
@@ -15,16 +15,25 @@ export class ConsoleAppImpl implements ConsoleApp {
   }
 
   async run(): Promise<void> {
-    const askForCommand = 'Conversion command: ';
-    this.consoleIO.initialize();
+    try {
+      const askForCommand = 'Conversion command: ';
 
-    const inputCommand = await this.consoleIO.readInput(askForCommand);
+      const inputCommand = await this.consoleIO.readInput(askForCommand);
 
-    const validCommand = this.parseCommand(inputCommand);
+      const validCommand = this.parseCommand(inputCommand);
 
-    const convertedUnit = this.processConversion(validCommand);
-
-    this.consoleIO.printOutput(`${convertedUnit}`);
+      this.processConversion(validCommand);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error instanceof ParsingError || error instanceof ConversionError) {
+          this.consoleIO.printError(error.message);
+        } else if (error instanceof Error) {
+          this.consoleIO.printError(`System Error: ${error.message}`);
+        }
+      } else {
+        this.consoleIO.printError('An unknown error occurred during command execution.');
+      }
+    }
   }
 
   private parseCommand(command: string): ConversionPayload {
@@ -37,7 +46,7 @@ export class ConsoleAppImpl implements ConsoleApp {
     const toUnit = inputString[3];
 
     if (!value || !fromUnit || !toUnit) {
-      throw new ParsingError('');
+      throw new ParsingError('Invalid input command.');
     }
 
     const inputPayload: ConversionPayload = {
@@ -46,23 +55,14 @@ export class ConsoleAppImpl implements ConsoleApp {
       toUnit,
     };
 
-
     return inputPayload;
   }
 
   private processConversion(conversionPayload: ConversionPayload): void {
-    try {
-      const value = this.unitConverter.convert(conversionPayload);
+    const value = this.unitConverter.convert(conversionPayload);
 
-      const output = `Result: ${value.toFixed(4)} ${conversionPayload.toUnit}`;
+    const output = `Result: ${value.toFixed(4)} ${conversionPayload.toUnit}`;
 
-      this.consoleIO.printOutput(output);
-    } catch (error) {
-        if ( error instanceof ConversionError) {
-            this.consoleIO.printError(error.message)
-        } else {
-            console.log(error);
-        }
-    }
+    this.consoleIO.printOutput(output);
   }
 }
