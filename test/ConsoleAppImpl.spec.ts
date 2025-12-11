@@ -121,4 +121,77 @@ describe('ConsoleAppImpl', () => {
       expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
     });
   });
+
+  describe('run()', () => {
+    it('should call all relevant method on successfull conversion', async () => {
+      const conversionCommand = 'Conversion command: ';
+      const input = '2 kilometer to yard';
+      const convertedValue = 2187.23;
+
+      const expectedPayload: ConversionPayload = {
+        value: 2,
+        fromUnit: 'kilometer',
+        toUnit: 'yard',
+      };
+      const expectedResult = `Result: ${convertedValue.toFixed(4)} ${expectedPayload.toUnit}`;
+      mockConsoleIO.readInput.mockResolvedValue(input);
+      mockUnitConverter.convert.mockReturnValue(convertedValue);
+
+      await consoleAppImpl.run();
+
+      expect(mockConsoleIO.readInput).toHaveBeenCalledWith(conversionCommand);
+      expect(mockUnitConverter.convert).toHaveBeenCalledWith(expectedPayload);
+      expect(mockConsoleIO.printOutput).toHaveBeenCalledWith(expectedResult);
+    });
+
+    it('should catch parsingError and print it', async () => {
+      const conversionCommand = 'Conversion command: ';
+      const invalidInput = 'invalid input';
+      const errorMessage = 'Invalid input command.';
+
+      mockConsoleIO.readInput.mockResolvedValue(invalidInput);
+      mockUnitConverter.convert.mockImplementationOnce(() => {
+        throw new ConversionError(errorMessage);
+      });
+
+      await consoleAppImpl.run();
+
+      expect(mockConsoleIO.readInput).toHaveBeenCalledWith(conversionCommand);
+      expect(mockUnitConverter.convert).not.toHaveBeenCalled();
+      expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
+      expect(mockConsoleIO.printError).toHaveBeenCalledWith(errorMessage);
+    });
+
+    it('should catch unkown error and print it', async () => {
+      const conversionCommand = 'Conversion command: ';
+      const validInput = '5 meter to yard';
+      const genericError = 'Invalid input command.';
+      const expectedOutput = `System Error: ${genericError}`;
+
+      mockConsoleIO.readInput.mockResolvedValue(validInput);
+      mockUnitConverter.convert.mockImplementationOnce(() => {
+        throw new Error(genericError);
+      });
+
+      await consoleAppImpl.run();
+
+      expect(mockConsoleIO.readInput).toHaveBeenCalledWith(conversionCommand);
+      expect(mockUnitConverter.convert).toHaveBeenCalled();
+      expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
+      expect(mockConsoleIO.printError).toHaveBeenCalledWith(expectedOutput);
+    });
+
+    it('should print unknown non-error type system errors', async () => {
+      const nonErrorThrowable = 'fatal-error';
+      const expectedOutput = 'An unknown error occurred during command execution.';
+
+      mockConsoleIO.readInput.mockRejectedValue(nonErrorThrowable);
+
+      await consoleAppImpl.run();
+
+      expect(mockConsoleIO.printError).toHaveBeenCalledWith(expectedOutput);
+      expect(mockConsoleIO.printOutput).not.toHaveBeenCalled();
+      expect(mockUnitConverter.convert).not.toHaveBeenCalled();
+    });
+  });
 });
