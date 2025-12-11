@@ -15,23 +15,29 @@ export class ConsoleAppImpl implements ConsoleApp {
   }
 
   async run(): Promise<void> {
-    try {
-      const askForCommand = 'Conversion command: ';
+    while (true) {
+      try {
+        const askForCommand = 'Conversion command: ';
 
-      const inputCommand = await this.consoleIO.readInput(askForCommand);
+        const inputCommand = await this.consoleIO.readInput(askForCommand);
 
-      const validCommand = this.parseCommand(inputCommand);
-
-      this.processConversion(validCommand);
-    } catch (error) {
-      if (error instanceof Error) {
-        if (error instanceof ParsingError || error instanceof ConversionError) {
-          this.consoleIO.printError(error.message);
-        } else {
-          this.consoleIO.printError(`System Error: ${error.message}`);
+        if (inputCommand === 'exit') {
+          process.exit(0);
         }
-      } else {
-        this.consoleIO.printError('An unknown error occurred during command execution.');
+
+        const validCommand = this.parseCommand(inputCommand);
+
+        this.processConversion(validCommand);
+      } catch (error) {
+        if (error instanceof Error) {
+          if (error instanceof ParsingError || error instanceof ConversionError) {
+            this.consoleIO.printError(error.message);
+          } else {
+            this.consoleIO.printError(`System Error: ${error.message}`);
+          }
+        } else {
+          this.consoleIO.printError('An unknown error occurred during command execution.');
+        }
       }
     }
   }
