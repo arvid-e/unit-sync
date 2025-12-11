@@ -5,9 +5,5 @@ export class ParsingError extends Error {
     super(message);
 
     this.name = name;
-
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, ParsingError);
-    }
   }
 }
