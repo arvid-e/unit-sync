@@ -124,12 +124,12 @@ describe('ConsoleAppImpl', () => {
   });
 
   describe('run()', () => {
-    it('should call all relevant method on successfull conversion', async () => {
-      const conversionCommand = 'Conversion command: ';
-      const exitCommand = 'exit';
-      const input = '2 kilometer to yard';
-      const convertedValue = 2187.23;
+    const conversionCommand = 'Conversion command: ';
+    const exitCommand = 'exit';
 
+    it('should call all relevant method on successfull conversion', async () => {
+      const convertedValue = 2187.23;
+      const validInput = '2 kilometer to yard';
       const expectedPayload: ConversionPayload = {
         value: 2,
         fromUnit: 'kilometer',
@@ -137,7 +137,7 @@ describe('ConsoleAppImpl', () => {
       };
       const expectedResult = `Result: ${convertedValue.toFixed(4)} ${expectedPayload.toUnit}`;
 
-      mockConsoleIO.readInput.mockResolvedValueOnce(input).mockResolvedValueOnce(exitCommand);
+      mockConsoleIO.readInput.mockResolvedValueOnce(validInput).mockResolvedValueOnce(exitCommand);
 
       mockUnitConverter.convert.mockReturnValue(convertedValue);
 
@@ -149,8 +149,6 @@ describe('ConsoleAppImpl', () => {
     });
 
     it('should catch parsingError and print it', async () => {
-      const conversionCommand = 'Conversion command: ';
-      const exitCommand = 'exit';
       const invalidInput = 'invalid input';
       const errorMessage = 'Invalid input command.';
 
@@ -168,10 +166,8 @@ describe('ConsoleAppImpl', () => {
     });
 
     it('should catch unkown error and print it', async () => {
-      const conversionCommand = 'Conversion command: ';
-      const exitCommand = 'exit';
       const validInput = '5 meter to yard';
-      const genericError = 'Invalid input command.';
+      const genericError = 'Generic error.';
       const expectedOutput = `System Error: ${genericError}`;
 
       mockConsoleIO.readInput.mockResolvedValueOnce(validInput).mockResolvedValueOnce(exitCommand);
