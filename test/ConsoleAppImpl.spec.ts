@@ -137,9 +137,7 @@ describe('ConsoleAppImpl', () => {
       };
       const expectedResult = `Result: ${convertedValue.toFixed(4)} ${expectedPayload.toUnit}`;
 
-      mockConsoleIO.readInput
-        .mockResolvedValueOnce(input)
-        .mockResolvedValueOnce(exitCommand); 
+      mockConsoleIO.readInput.mockResolvedValueOnce(input).mockResolvedValueOnce(exitCommand);
 
       mockUnitConverter.convert.mockReturnValue(convertedValue);
 
@@ -156,9 +154,7 @@ describe('ConsoleAppImpl', () => {
       const invalidInput = 'invalid input';
       const errorMessage = 'Invalid input command.';
 
-      mockConsoleIO.readInput
-        .mockResolvedValueOnce(invalidInput)
-        .mockResolvedValueOnce(exitCommand); 
+      mockConsoleIO.readInput.mockResolvedValueOnce(invalidInput).mockResolvedValueOnce(exitCommand);
       mockUnitConverter.convert.mockImplementationOnce(() => {
         throw new ConversionError(errorMessage);
       });
@@ -178,9 +174,7 @@ describe('ConsoleAppImpl', () => {
       const genericError = 'Invalid input command.';
       const expectedOutput = `System Error: ${genericError}`;
 
-      mockConsoleIO.readInput
-        .mockResolvedValueOnce(validInput)
-        .mockResolvedValueOnce(exitCommand); 
+      mockConsoleIO.readInput.mockResolvedValueOnce(validInput).mockResolvedValueOnce(exitCommand);
       mockUnitConverter.convert.mockImplementationOnce(() => {
         throw new Error(genericError);
       });

@@ -19,7 +19,3 @@ const consoleApp = new ConsoleAppImpl(unitConverter, consoleIO);
 await consoleApp.run();
 
 process.exit(0);
-
-
-
-

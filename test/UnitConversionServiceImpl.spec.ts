@@ -111,7 +111,7 @@ describe('UnitConversionService', () => {
 
     const inputValueInBaseUnit = value * fromUnitMultiplier + fromUnitOffset;
     const expectedResult = (inputValueInBaseUnit - toUnitOffset) / toUnitMultiplier;
-    
+
     const conversionPayload: ConversionPayload = {
       value,
       fromUnit,
@@ -137,8 +137,8 @@ describe('UnitConversionService', () => {
     const conversionPayload: ConversionPayload = {
       value,
       fromUnit,
-      toUnit
-    }
+      toUnit,
+    };
 
     const convertedMass = unitConversionServiceImpl.calculate(conversionPayload);
 
@@ -159,8 +159,8 @@ describe('UnitConversionService', () => {
     const conversionPayload: ConversionPayload = {
       value,
       fromUnit,
-      toUnit
-    }
+      toUnit,
+    };
 
     const convertedMass = unitConversionServiceImpl.calculate(conversionPayload);
 
@@ -181,8 +181,8 @@ describe('UnitConversionService', () => {
     const conversionPayload: ConversionPayload = {
       value,
       fromUnit,
-      toUnit
-    }
+      toUnit,
+    };
 
     const convertedVolume = unitConversionServiceImpl.calculate(conversionPayload);
 
@@ -203,8 +203,8 @@ describe('UnitConversionService', () => {
     const conversionPayload: ConversionPayload = {
       value,
       fromUnit,
-      toUnit
-    }
+      toUnit,
+    };
 
     const convertedVolume = unitConversionServiceImpl.calculate(conversionPayload);
 
@@ -221,8 +221,8 @@ describe('UnitConversionService', () => {
     const conversionPayload: ConversionPayload = {
       value,
       fromUnit,
-      toUnit
-    }
+      toUnit,
+    };
 
     const convertedValue = unitConversionServiceImpl.calculate(conversionPayload);
 
@@ -243,12 +243,10 @@ describe('UnitConversionService', () => {
     const conversionPayload: ConversionPayload = {
       value,
       fromUnit,
-      toUnit
-    }
+      toUnit,
+    };
 
-    expect(() => unitConversionServiceImpl.calculate(conversionPayload)).toThrow(
-      'Conversion config is missing.',
-    );
+    expect(() => unitConversionServiceImpl.calculate(conversionPayload)).toThrow('Conversion config is missing.');
     expect(mockConversionConfigRepo.getConversionConfig).toHaveBeenCalledTimes(2);
   });
 });

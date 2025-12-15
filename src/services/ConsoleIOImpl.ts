@@ -31,7 +31,6 @@ export class ConsoleIOImpl implements ConsoleIO {
     console.error(`ERROR: ${error}`);
   }
 
-
   public exit(): void {
     if (this.rl) {
       this.rl.close();
