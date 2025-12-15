@@ -16,7 +16,9 @@ const unitConverter = new UnitConverterImpl(unitConversionService, unitValidatio
 const consoleIO = new ConsoleIOImpl();
 const consoleApp = new ConsoleAppImpl(unitConverter, consoleIO);
 
-consoleApp.run();
+await consoleApp.run();
+
+process.exit(0);
 
 
 

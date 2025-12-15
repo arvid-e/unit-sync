@@ -5,6 +5,7 @@ import { ConsoleIO } from '../src/interfaces/ConsoleIO';
 import { UnitConverter } from '../src/interfaces/UnitConverter';
 import { ConsoleAppImpl } from '../src/services/ConsoleAppImpl';
 import { ConversionPayload } from '../src/types/UnitTypes';
+import { exit } from 'process';
 
 type MockUnitConverter = UnitConverter & { convert: ReturnType<typeof vi.fn> };
 type MockConsoleIO = ConsoleIO & {
@@ -125,6 +126,7 @@ describe('ConsoleAppImpl', () => {
   describe('run()', () => {
     it('should call all relevant method on successfull conversion', async () => {
       const conversionCommand = 'Conversion command: ';
+      const exitCommand = 'exit';
       const input = '2 kilometer to yard';
       const convertedValue = 2187.23;
 
@@ -134,7 +136,11 @@ describe('ConsoleAppImpl', () => {
         toUnit: 'yard',
       };
       const expectedResult = `Result: ${convertedValue.toFixed(4)} ${expectedPayload.toUnit}`;
-      mockConsoleIO.readInput.mockResolvedValue(input);
+
+      mockConsoleIO.readInput
+        .mockResolvedValueOnce(input)
+        .mockResolvedValueOnce(exitCommand); 
+
       mockUnitConverter.convert.mockReturnValue(convertedValue);
 
       await consoleAppImpl.run();
@@ -146,10 +152,13 @@ describe('ConsoleAppImpl', () => {
 
     it('should catch parsingError and print it', async () => {
       const conversionCommand = 'Conversion command: ';
+      const exitCommand = 'exit';
       const invalidInput = 'invalid input';
       const errorMessage = 'Invalid input command.';
 
-      mockConsoleIO.readInput.mockResolvedValue(invalidInput);
+      mockConsoleIO.readInput
+        .mockResolvedValueOnce(invalidInput)
+        .mockResolvedValueOnce(exitCommand); 
       mockUnitConverter.convert.mockImplementationOnce(() => {
         throw new ConversionError(errorMessage);
       });
@@ -164,11 +173,14 @@ describe('ConsoleAppImpl', () => {
 
     it('should catch unkown error and print it', async () => {
       const conversionCommand = 'Conversion command: ';
+      const exitCommand = 'exit';
       const validInput = '5 meter to yard';
       const genericError = 'Invalid input command.';
       const expectedOutput = `System Error: ${genericError}`;
 
-      mockConsoleIO.readInput.mockResolvedValue(validInput);
+      mockConsoleIO.readInput
+        .mockResolvedValueOnce(validInput)
+        .mockResolvedValueOnce(exitCommand); 
       mockUnitConverter.convert.mockImplementationOnce(() => {
         throw new Error(genericError);
       });

@@ -22,7 +22,7 @@ export class ConsoleAppImpl implements ConsoleApp {
         const inputCommand = await this.consoleIO.readInput(askForCommand);
 
         if (inputCommand === 'exit') {
-          process.exit(0);
+          break;
         }
 
         const validCommand = this.parseCommand(inputCommand);
@@ -37,6 +37,7 @@ export class ConsoleAppImpl implements ConsoleApp {
           }
         } else {
           this.consoleIO.printError('An unknown error occurred during command execution.');
+          break;
         }
       }
     }
