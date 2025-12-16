@@ -12,7 +12,7 @@ export class UnitValidationServiceImpl implements UnitValidationService {
   }
 
   isValidValue(value: number): boolean {
-    return isNaN(value) || value === 0 || value === Infinity ? false : true;
+    return isNaN(value) || value === Infinity ? false : true;
   }
 
   isValidUnit(unit: string): boolean {
@@ -26,6 +26,7 @@ export class UnitValidationServiceImpl implements UnitValidationService {
   isConversionPossible(value: number, unit: string): boolean {
     const celsiusAbsoluteZero = -273.15;
     const fahrenheitAbsoluteZero = -459.67;
+    const kelvinAbsoluteZero = 0;
 
     const unitInfo = this.unitInfoRepo.getUnitInfo(unit);
 
@@ -44,6 +45,10 @@ export class UnitValidationServiceImpl implements UnitValidationService {
     }
 
     if (canonicalUnit === 'fahrenheit' && value < fahrenheitAbsoluteZero) {
+      return false;
+    }
+
+    if (canonicalUnit === 'kelvin' && value < kelvinAbsoluteZero) {
       return false;
     }
 

@@ -52,7 +52,7 @@ export class ConsoleAppImpl implements ConsoleApp {
 
     const toUnit = inputString[3];
 
-    if (!value || !fromUnit || !toUnit) {
+    if (value === null || value === undefined || !fromUnit || !toUnit) {
       throw new ParsingError('Invalid input command.');
     }
 

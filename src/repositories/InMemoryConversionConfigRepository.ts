@@ -14,8 +14,8 @@ export class InMemoryConversionConfigRepository implements ConversionConfigRepos
 
     // Temperature (Base: Celsius) (
     ['celsius', { multiplier: 1, offset: 0 }],
-    // REMINDER: Needs calculation
     ['fahrenheit', { multiplier: 0.55555555, offset: -17.7777777 }],
+    ['kelvin', { multiplier: 1, offset: -273.15 }],
 
     // Volume (Base: Liter)
     ['liter', { multiplier: 1, offset: 0 }],
