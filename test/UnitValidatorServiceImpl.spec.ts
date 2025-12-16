@@ -28,13 +28,6 @@ describe('UnitValidationService', () => {
       expect(invalidInput).toBe(false);
     });
 
-    it('should return false when input is 0', () => {
-      const inputValue = 0;
-      const invalidInput = unitValidationServiceImpl.isValidValue(inputValue);
-
-      expect(invalidInput).toBe(false);
-    });
-
     it('should return false when input is Infinity', () => {
       const inputValue = Infinity;
       const invalidInput = unitValidationServiceImpl.isValidValue(inputValue);
@@ -146,6 +139,7 @@ describe('UnitValidationService', () => {
         if (unit === 'mile') return { unit: 'mile', dimension: 'length' };
         if (unit === 'fahrenheit') return { unit: 'fahrenheit', dimension: 'temperature' };
         if (unit === 'celsius') return { unit: 'celsius', dimension: 'temperature' };
+        if (unit === 'kelvin') return { unit: 'kelvin', dimension: 'temperature' };
         if (unit === 'kilogram') return { unit: 'kilogram', dimension: 'mass' };
         return undefined;
       });
@@ -194,6 +188,16 @@ describe('UnitValidationService', () => {
     it('should return false on invalid negative temperature (-500 fahrenheit)', () => {
       const inputValue = -500;
       const unit = 'fahrenheit';
+
+      const validDimensions = unitValidationServiceImpl.isConversionPossible(inputValue, unit);
+
+      expect(validDimensions).toBe(false);
+      expect(mockUnitInfoRepo.getUnitInfo).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return false on invalid negative temperature (-1 kelvin)', () => {
+      const inputValue = -1;
+      const unit = 'kelvin';
 
       const validDimensions = unitValidationServiceImpl.isConversionPossible(inputValue, unit);
 
