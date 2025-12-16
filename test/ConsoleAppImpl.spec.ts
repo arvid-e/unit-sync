@@ -5,7 +5,6 @@ import { ConsoleIO } from '../src/interfaces/ConsoleIO';
 import { UnitConverter } from '../src/interfaces/UnitConverter';
 import { ConsoleAppImpl } from '../src/services/ConsoleAppImpl';
 import { ConversionPayload } from '../src/types/UnitTypes';
-import { exit } from 'process';
 
 type MockUnitConverter = UnitConverter & { convert: ReturnType<typeof vi.fn> };
 type MockConsoleIO = ConsoleIO & {
